@@ -10,7 +10,7 @@ class feed{
 	function feed($id,$title){
 		$this->id = $id;
 		$this->title = $title;
-		$this->updated = date('Y-m-d\TH:i:s\Z');
+		$this->updated = time();
 		$this->link = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";;
 	}
 	public static function textEscape($text){
@@ -25,13 +25,13 @@ class feed{
 			function __construct($id,$title){
 				$this->id = $id;
 				$this->title = $title;
-				$this->updated = date('Y-m-d\TH:i:s\Z');
+				$this->updated = time();
 			}
 			function getItem(){
 				$this->print = '<entry>';
 				$this->print .= '<id>'.feed::textEscape($this->id).'</id>';
 				$this->print .= '<title>'.feed::textEscape($this->title).'</title>';
-				$this->print .= '<updated>'.feed::textEscape($this->updated).'</updated>';
+				$this->print .= '<updated>'.feed::textEscape(date('Y-m-d\TH:i:s\Z',$this->updated)).'</updated>';
 				if($this->content != null){
 					$this->print .= '<content>'.feed::textEscape($this->content).'</content>';
 				}
@@ -46,7 +46,7 @@ class feed{
 		$print = '<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom">';
 		$print .= '<id>'.feed::textEscape($this->id).'</id>';
 		$print .= '<title>'.feed::textEscape($this->title).'</title>';
-		$print .= '<updated>'.feed::textEscape($this->updated).'</updated>';
+		$print .= '<updated>'.feed::textEscape(date('Y-m-d\TH:i:s\Z',$this->updated)).'</updated>';
 		if($this->author != null){
 			$print .= '<author><name>'.feed::textEscape($this->author).'</name></author>';
 		}

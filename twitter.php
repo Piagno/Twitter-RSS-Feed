@@ -1,34 +1,33 @@
 <?php
 require 'feed.php';
+require 'simple_html_dom.php';
 header("Cache-Control: no-cache");
-error_reporting(0);
 if(isset($_GET['userName'])){
 	$username = $_GET['userName'];
 	$url = 'https://twitter.com/'.$username;
 	$feed = new feed($url,$username);
 	$feed->title = 'Twitter '.$username;
 	$feed->author = $username;
-	$file = file_get_contents($url);
-	$doc = new DOMDocument();
-	$doc->loadHTML($file);
-	$items = $doc->getElementById('stream-items-id');
-	$counter = 0;
-	foreach($items->childNodes as $item){
-		if($item->tagName == 'li'){
-			$wrapper = ($item->childNodes)[1];
-			foreach($wrapper->childNodes as $wrapperItem){
-				if($wrapperItem->tagName == 'div'){
-					$header = ($wrapperItem->childNodes)[1];
-					$date = ($header->childNodes)[3];
-					$content = ($wrapperItem->childNodes)[3];
-					if($header != null){
-						$title = substr($content->textContent,0,50);
-						$item = $feed->newItem($url.'?'.$counter,$title);
-						$item->content = $content->textContent;
-					}
-				}
-			}
-		$counter++;
+	$html = file_get_html($url);
+	foreach($html->find('.stream-item') as $item){
+		$content = null;
+		$date = null;
+		foreach($item->find('.js-tweet-text-container') as $e){
+			$src = $e->first_child();
+			$plaintext = str_replace(((string)$e->first_child()->first_child()),'',$src);
+			$contenthtml = str_get_html($plaintext);
+			$content = html_entity_decode(preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $contenthtml->plaintext));
+		}
+		foreach($item->find('.js-short-timestamp') as $e){
+			$date = $e->getAttribute('data-time');
+		}
+		$id = $item->getAttribute('data-item-id');
+		$link = $url.'/status/'.$id;
+		$title = substr($content,0,50);
+		if($title != ""){
+			$item  = $feed->newItem($link,$title);
+			$item->updated = $date;
+			$item->content = $content;
 		}
 	}
 	$feed->printFeed();
