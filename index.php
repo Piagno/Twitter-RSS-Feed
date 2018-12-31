@@ -8,7 +8,7 @@
 		<script>
 			generateLink = ()=>{
 				const userName = document.getElementById('userName').value
-				const link = 'https://tool.piagno.ch/twitter/feed.php?userName='+userName
+				const link = 'https://tool.piagno.ch/twitter/twitter.php?userName='+userName
 				const linkElement = document.getElementById('link')
 				linkElement.href = link
 				linkElement.innerHTML = link
