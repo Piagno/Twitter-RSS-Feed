@@ -23,10 +23,8 @@ if(isset($_GET['userName'])){
 					$content = ($wrapperItem->childNodes)[3];
 					if($header != null){
 						$title = substr($content->textContent,0,50);
-						$title = str_replace("& ","",iconv(mb_detect_encoding($title, mb_detect_order(), true), "UTF-8", $title));
 						$item = $feed->newItem($url.'?'.$counter,$title);
-						$content = $content->textContent;
-						$item->content = str_replace("& ","",iconv(mb_detect_encoding($content, mb_detect_order(), true), "UTF-8", $content));
+						$item->content = $content->textContent;
 					}
 				}
 			}
