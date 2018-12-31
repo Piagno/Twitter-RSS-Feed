@@ -14,7 +14,7 @@ if(isset($_GET['userName'])){
 		$date = null;
 		foreach($item->find('.js-tweet-text-container') as $e){
 			$src = $e->first_child();
-			$plaintext = str_replace(((string)$e->first_child()->first_child()),'',$src);
+			$plaintext = str_replace(((string)$e->first_child()->last_child()),'',$src);
 			$contenthtml = str_get_html($plaintext);
 			$content = html_entity_decode(preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $contenthtml->plaintext));
 		}
