@@ -4,4 +4,4 @@ https://tool.piagno.ch/twitter
 
 
 ### Feed
-https://tool.piagno.ch/twitter/feed.php?userName=USERNAME
+https://tool.piagno.ch/twitter/twitter.php?userName=USERNAME
