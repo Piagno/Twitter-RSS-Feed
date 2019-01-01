@@ -22,6 +22,7 @@ class feed{
 			var $title; 
 			var $updated;
 			var $content = null;
+			var $link = null;
 			function __construct($id,$title){
 				$this->id = $id;
 				$this->title = $title;
@@ -34,6 +35,9 @@ class feed{
 				$this->print .= '<updated>'.feed::textEscape(date('Y-m-d\TH:i:s\Z',$this->updated)).'</updated>';
 				if($this->content != null){
 					$this->print .= '<content>'.feed::textEscape($this->content).'</content>';
+				}
+				if($this->link != null){
+					$this->print .= '<link rel="alternate" href="'.$this->link.'" />';
 				}
 				$this->print .= '</entry>';
 				return $this->print;
