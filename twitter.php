@@ -28,7 +28,7 @@ if(isset($_GET['userName'])){
 			$item  = $feed->newItem($link,$title);
 			$item->updated = $date;
 			$item->content = $content;
-			$item->link = '/'.$username.'/status/'.$id;
+			$item->link = 'https://twitter.com/'.$username.'/status/'.$id;
 		}
 	}
 	$feed->printFeed();
